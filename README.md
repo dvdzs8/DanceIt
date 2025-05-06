@@ -1,4 +1,4 @@
-# Commands for Dev
+# commands for me lol
 to create a new project: 
 $ npm create vite@latest nameOfProject
 $ cd nameOfProject
