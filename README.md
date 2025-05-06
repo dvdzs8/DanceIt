@@ -1,7 +1,5 @@
 # Description
-
 A website that you upload a video to which plays it back and provides special controls like:
-
 - [ ]  mirroring
 - [ ]  custom speed presets and increases
 - [ ]  custom skipping amounts (ie. forwards by 2.7 seconds)
@@ -18,11 +16,9 @@ A website that you upload a video to which plays it back and provides special co
     - the main pro of danceit (helps long term dance projects like ballet)
 
 ![image](https://github.com/user-attachments/assets/6638b0ab-bad1-4ec1-b967-e6d097abedc9)
-
-Correction: Video player in top left corner, controls at small bar on bottom, notes at the bottom
+Correction: Video player in top left corner, controls at small bar on bottom, notes at the bottom left. or just check my notepad for better drawing
 
 # Stretch Goals
-
 - [ ]  resizable video size, preferably by user dragging the corner
 - [ ]  video zoom in or crop
 - [ ]  export button get a video with the note pop ups included
