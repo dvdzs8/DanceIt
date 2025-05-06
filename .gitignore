@@ -12,6 +12,13 @@ dist
 dist-ssr
 *.local
 
+# Environment variables
+.env
+.env.*
+
+# Thumbnails potentially needed for Windows
+Thumbs.db
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
