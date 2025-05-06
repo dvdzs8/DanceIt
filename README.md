@@ -19,7 +19,7 @@ A website that you upload a video to which plays it back and provides special co
 
 ![image](https://github.com/user-attachments/assets/6638b0ab-bad1-4ec1-b967-e6d097abedc9)
 
-Correction: Video player in top left corner, controls at small bar on bottom, notes on the left
+Correction: Video player in top left corner, controls at small bar on bottom, notes at the bottom
 
 # Stretch Goals
 
