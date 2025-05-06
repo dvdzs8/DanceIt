@@ -12,7 +12,7 @@ A website that you upload a video to which plays it back and provides special co
 - [ ]  looping sections
     - click start loop or end loop while paused at that time. playbar is marked/colored
     - if end is before start, make the video loop
-- [x]  timestamped notes that play in big font while you dance able to be edited and deleted
+- [ ]  timestamped notes that play in big font while you dance able to be edited and deleted
     - [ ]  while playing: notes fade in on the side with big font and a countdown to their timestamp. you can toggle this option
     - [ ]  while paused: notes are displayed in smaller-font list with their clickable timestamps
     - the main pro of danceit (helps long term dance projects like ballet)
