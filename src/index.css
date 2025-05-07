@@ -1,0 +1,12 @@
+body {
+  margin: 0;
+}
+
+.video-container {
+  width: 80%;
+  max-width: 1250px;
+}
+
+video {
+  width: 100%;
+}

@@ -1,35 +1,46 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import vid from './assets/vid.MOV';
+import './App.css';
+
+import { useState, useRef } from 'react';
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  //later add in upload somehow
+
+  const [playing, setPlaying] = useState(false);
+  const vidRef = useRef(null);
+
+  function clickPlay() {
+    //actually pause/unpause the video
+    playing ? vidRef.current.pause() : vidRef.current.play();
+
+    //change what the button says
+    setPlaying(!playing);
+  }
+
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="video-container">
+        <video src={vid} ref={vidRef}></video>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+
+      <div className="video-controls-container">
+          <div className="timeline-container"></div>
+
+          <div className="controls">
+            <button className="play-button" onClick={clickPlay}>
+              {playing ? "Pause" : "Play"}
+            </button>
+          </div>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+
+      <br/>
+      <div className="footer">
+        <p>DanceIt! by David Shi</p>
+      </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
