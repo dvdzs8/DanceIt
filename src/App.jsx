@@ -9,10 +9,10 @@ function App() {
 
   //useStates to sync UI
   const [playing, setPlaying] = useState(false);
+  const [fullScreen, setFullScreen] = useState(false);
 
   //get DOM references (js usable vars drawn from the HTML)
   const vidRef = useRef(null);
-  
 
   function clickPlay() {
     if (!vidRef.current) return;
@@ -35,9 +35,9 @@ function App() {
 
   return (
     <>
-      <div className="video-container">
+      <div className={`video-container ${fullScreen ? 'full-screen' : ''}`}>
 
-        <video src={vid} ref={vidRef} onEnded={clickPlay}></video>
+        <video src={vid} ref={vidRef} onEnded={clickPlay}> </video>
 
         <br/>
 
@@ -57,12 +57,13 @@ function App() {
               <input className="volume-slider" onChange={(e) => changeVolume(e)} type="range" min="0" max="1" step="any" defaultValue="1"></input>
             </div>
 
+            <button className="full-screen-button" onClick={() => setFullScreen(!fullScreen)}>{fullScreen ? "Exit" : "Full Screen"}</button>
+
           </div>
         </div>
 
       </div>
 
-      <br/>
       <div className="footer">
         <p>DanceIt! by David Shi</p>
       </div>
