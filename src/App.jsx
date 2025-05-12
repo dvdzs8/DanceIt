@@ -2,7 +2,7 @@ import vid from './assets/vid.MOV';
 import './App.css';
 
 import { useState, useRef, useEffect } from 'react';
-import { splitVendorChunkPlugin } from 'vite';
+// import { splitVendorChunkPlugin } from 'vite';
 
 function App() {
 
