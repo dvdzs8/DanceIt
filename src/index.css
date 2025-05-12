@@ -7,7 +7,7 @@ body {
   max-width: 1250px;
 }
 
-.video-container.full-screen {
+.body.full-screen {
   max-width: initial;
   width: 100%;
   max-height: 100vh;
@@ -19,6 +19,7 @@ video {
 
 .video-controls-container{
   z-index: 100;
+  display: flex;
 }
 
 .volume-container {

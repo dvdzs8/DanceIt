@@ -1,3 +1,9 @@
+/**
+ * i think i maybe want to make full screen only display the video
+ * if there are no controls except pause in full screen is that fine?
+ * maybe keep the forward and back arrows
+ */
+
 import vid from './assets/vid.MOV';
 import './App.css';
 
@@ -13,6 +19,11 @@ function App() {
   const [fullScreen, setFullScreen] = useState(false);
   const [curTime, setCurTime] = useState(0); //in seconds
   const [vidDuration, setVidDuration] = useState(0); //is set to correct format
+  
+  const [bigSkipBack, setBigSkipBack] = useState(10);
+  const [skipBack, setSkipBack] = useState(1);
+  const [skipForward, setSkipForawrd] = useState(1);
+  const [bigSkipForward, setBigSkipForward] = useState(10);
 
   //get DOM references (js usable vars drawn from the HTML)
   const vidContainerRef = useRef(null);
@@ -30,21 +41,25 @@ function App() {
           clickPlay();
           break;
         case "arrowleft":
-          skip(-5);
+          skip(-1);
           break;
         case "arrowright":
-          skip(5);
+          skip(1);
           break;
       }
     }
 
+    document.addEventListener('fullscreenchange', () => {
+      setFullScreen(document.fullscreenElement != null);
+    })
     window.addEventListener('keydown', (e) => handleKeyDown(e));
+    return () => {
+      window.removeEventListener('keydown', (e) => handleKeyDown(e));
+    }
+    }, []);
 
-    return () => window.removeEventListener('keydown', (e) => handleKeyDown(e));
-  }, []);
-
-  function skip(time) {
-    vidRef.current.currentTime += duration;
+  function skip(t) {
+    vidRef.current.currentTime += t;
   }
 
   function clickPlay() {
@@ -98,7 +113,7 @@ function App() {
 
   return (
     <>
-      <div className={`video-container ${fullScreen ? 'full-screen' : ''}`} ref={vidContainerRef}>
+      <div className="video-container" ref={vidContainerRef}>
 
         <video 
           src={vid} 
@@ -129,13 +144,17 @@ function App() {
             </button>
             
             <div className="duration-container">
+              <button className="skip-button" onClick={() => skip(bigSkipBack)}>{"<<"}</button>
+              <button className="skip-button" onClick={() => skip(skipBack)}>{"<"}</button>
               <p>{`${formatTime(curTime)} / ${vidDuration}`}</p>
+              <button className="skip-button" onClick={() => skip(skipForward)}>{">"}</button>
+              <button className="skip-button" onClick={() => skip(bigSkipForward)}>{">>"}</button>
+                
             </div>
 
           </div>
 
       </div>
-
       <div className="footer">
         <p>DanceIt! by David Shi</p>
       </div>
