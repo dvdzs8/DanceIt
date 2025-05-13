@@ -1,7 +1,13 @@
 /**
+ * 
+ * CURRENT TASK:
+ * skip buttons being editable for time
+ * 
+ * ISSUES: 
  * i think i maybe want to make full screen only display the video
  * if there are no controls except pause in full screen is that fine?
- * maybe keep the forward and back arrows
+ * maybe keep the forward and back arrows.
+ * 
  */
 
 import vid from './assets/vid.MOV';
@@ -20,6 +26,7 @@ function App() {
   const [curTime, setCurTime] = useState(0); //in seconds
   const [vidDuration, setVidDuration] = useState(0); //is set to correct format
   
+
   const [bigSkipBack, setBigSkipBack] = useState(10);
   const [skipBack, setSkipBack] = useState(1);
   const [skipForward, setSkipForawrd] = useState(1);
@@ -34,6 +41,7 @@ function App() {
   //this says: "on first render (since no dependencies), add listener for keydown to the whole window.
   //  then, when we are done, the return function is called to cleanup the listener"
   useEffect(() => { 
+
     function handleKeyDown(myE) {
       switch (myE.key.toLowerCase()) {
         case " ":
@@ -53,18 +61,29 @@ function App() {
       setFullScreen(document.fullscreenElement != null);
     })
     window.addEventListener('keydown', (e) => handleKeyDown(e));
+    vidRef.current.addEventListener('ended', (e) => console.log("vid ended!"));
+
     return () => {
       window.removeEventListener('keydown', (e) => handleKeyDown(e));
+      document.removeEventListener('fullscreenchange', () => {
+        setFullScreen(document.fullscreenElement != null);
+      });
     }
-    }, []);
+
+  }, []);
 
   function skip(t) {
-    vidRef.current.currentTime += t;
+
+    //check if end of video
+    const calcTime = vidRef.current.currentTime + t;
+    if (calcTime >= vidDuration) {
+      vidRef.current.dispatchEvent(new Event("ended"));
+    }
+
+    vidRef.current.currentTime = calcTime;
   }
 
   function clickPlay() {
-    if (!vidRef.current) return;
-
     //actually pause/unpause the video
     playing ? vidRef.current.pause() : vidRef.current.play();
 
@@ -121,7 +140,7 @@ function App() {
           onClick={clickPlay} 
           onEnded={clickPlay}
           onTimeUpdate={(e) => setCurTime(e.target.currentTime)}
-          onLoadedMetadata={(e) => setVidDuration(formatTime(e.target.duration))}
+          onLoadedMetadata={(e) => setVidDuration(e.target.duration)}
         />
 
       </div>
@@ -144,9 +163,9 @@ function App() {
             </button>
             
             <div className="duration-container">
-              <button className="skip-button" onClick={() => skip(bigSkipBack)}>{"<<"}</button>
-              <button className="skip-button" onClick={() => skip(skipBack)}>{"<"}</button>
-              <p>{`${formatTime(curTime)} / ${vidDuration}`}</p>
+              <button className="skip-button" onClick={() => skip(-bigSkipBack)}>{"<<"}</button>
+              <button className="skip-button" onClick={() => skip(-skipBack)}>{"<"}</button>
+              <p>{`${formatTime(curTime)} / ${formatTime(vidDuration)}`}</p>
               <button className="skip-button" onClick={() => skip(skipForward)}>{">"}</button>
               <button className="skip-button" onClick={() => skip(bigSkipForward)}>{">>"}</button>
                 
@@ -156,7 +175,7 @@ function App() {
 
       </div>
       <div className="footer">
-        <p>DanceIt! by David Shi</p>
+        <p>DanceIt!</p>
       </div>
     </>
   );
