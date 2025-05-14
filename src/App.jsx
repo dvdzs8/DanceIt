@@ -4,6 +4,9 @@
  * skip buttons being editable for time
  * 
  * ISSUES: 
+ * how should i make it so when you change the skip to an invalid value,
+ *  it goes back to what it was before?
+ * 
  * i think i maybe want to make full screen only display the video
  * if there are no controls except pause in full screen is that fine?
  * maybe keep the forward and back arrows.
@@ -25,12 +28,11 @@ function App() {
   const [fullScreen, setFullScreen] = useState(false);
   const [curTime, setCurTime] = useState(0); //in seconds
   const [vidDuration, setVidDuration] = useState(0); //is set to correct format
-  
 
-  const [bigSkipBack, setBigSkipBack] = useState(10);
-  const [skipBack, setSkipBack] = useState(1);
-  const [skipForward, setSkipForawrd] = useState(1);
-  const [bigSkipForward, setBigSkipForward] = useState(10);
+  const bigSkipBack = useRef(10);
+  const skipBack = useRef(1);
+  const skipForward = useRef(1);
+  const bigSkipForward = useRef(10);
 
   //get DOM references (js usable vars drawn from the HTML)
   const vidContainerRef = useRef(null);
@@ -61,7 +63,6 @@ function App() {
       setFullScreen(document.fullscreenElement != null);
     })
     window.addEventListener('keydown', (e) => handleKeyDown(e));
-    vidRef.current.addEventListener('ended', (e) => console.log("vid ended!"));
 
     return () => {
       window.removeEventListener('keydown', (e) => handleKeyDown(e));
@@ -73,6 +74,9 @@ function App() {
   }, []);
 
   function skip(t) {
+    if (isNaN(t)) {
+      return;
+    }
 
     //check if end of video
     const calcTime = vidRef.current.currentTime + t;
@@ -112,6 +116,26 @@ function App() {
     setFullScreen(!fullScreen);
   }
 
+  function changeSkip(e, button) {
+
+    e.preventDefault();
+    
+    const value = e.target.value;
+    console.log("value: "+ value);
+
+    if (button === "bigSkipBack") {
+      bigSkipBack.current = value ? value : bigSkipBack.current;
+    } else if (button === 'skipBack') {
+      skipBack.current = value ? value : skipBack.current;
+    } else if (button === 'skipForward') {
+      skipForward.current = value ? value : skipForward.current;
+    } else if (button === 'bigSkipForward') {
+      bigSkipForward.current = value ? value : bigSkipForward.current;
+    }
+
+  }
+
+  //unfortunately... no idea what this is
   const leadingZeroFormatter = new Intl.NumberFormat(undefined, {minimumIntegerDigits: 2});
 
   //formats both the cur time and the total duration
@@ -163,13 +187,18 @@ function App() {
             </button>
             
             <div className="duration-container">
-              <button className="skip-button" onClick={() => skip(-bigSkipBack)}>{"<<"}</button>
-              <button className="skip-button" onClick={() => skip(-skipBack)}>{"<"}</button>
+              <button className="skip-button" onClick={() => skip(-bigSkipBack.current)}>{"<<"}</button>
+              <button className="skip-button" onClick={() => skip(-skipBack.current)}>{"<"}</button>
               <p>{`${formatTime(curTime)} / ${formatTime(vidDuration)}`}</p>
-              <button className="skip-button" onClick={() => skip(skipForward)}>{">"}</button>
-              <button className="skip-button" onClick={() => skip(bigSkipForward)}>{">>"}</button>
+              <button className="skip-button" onClick={() => skip(skipForward.current)}>{">"}</button>
+              <button className="skip-button" onClick={() => skip(bigSkipForward.current)}>{">>"}</button>
                 
             </div>
+
+            <input className="skip-input" value={bigSkipBack.current} type="number" step="0.1" onChange={(e) => changeSkip(e, "bigSkipBack")}></input>  
+            <input className="skip-input" value={skipBack.current} type="number" step="0.1" onChange={(e) => changeSkip(e, "skipBack")}></input>  
+            <input className="skip-input" value={skipForward.current} type="number" step="0.1" onChange={(e) => changeSkip(e, "skipForward")}></input>  
+            <input className="skip-input" value={bigSkipForward.current} type="number" step="0.1" onChange={(e) => changeSkip(e, "bigSkipForward")}></input>
 
           </div>
 
