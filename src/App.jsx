@@ -30,14 +30,16 @@ function App() {
   //useStates to sync UI
   const [playing, setPlaying] = useState(false);
   const [fullScreen, setFullScreen] = useState(false);
-  const [curTime, setCurTime] = useState(0); //in seconds
-  const [vidDuration, setVidDuration] = useState(0); //is set to correct format
-  const [speedText, setSpeedText] = useState(1+"x");
+  const [curTime, setCurTime] = useState(0.0); //in seconds
+  const [vidDuration, setVidDuration] = useState(0.0); //is set to correct format
+  const [speed, setSpeed] = useState(1.0);
 
-  const bigSkipBack = useRef(10);
-  const skipBack = useRef(1);
-  const skipForward = useRef(1);
-  const bigSkipForward = useRef(10);
+  const [bigSkipBack, setBigSkipBack] = useState(10.0);
+  const [skipBack, setSkipBack] = useState(1.0);
+  const [skipForward, setSkipForward] = useState(1.0);
+  const [bigSkipForward, setBigSkipForward] = useState(10.0);
+
+  const [speedInc, setSpeedInc] = useState(.05);
 
   //get DOM references (js usable vars drawn from the HTML)
   const vidContainerRef = useRef(null);
@@ -84,11 +86,10 @@ function App() {
     }
 
     //check if end of video
-    const calcTime = vidRef.current.currentTime + t;
+    const calcTime = vidRef.current.currentTime + parseFloat(t);
     if (calcTime >= vidDuration) {
       vidRef.current.dispatchEvent(new Event("ended"));
     }
-
     vidRef.current.currentTime = calcTime;
   }
 
@@ -122,33 +123,33 @@ function App() {
   }
 
   function changeSkip(e, button) {
-
-    e.preventDefault();
     
     const value = e.target.value;
     console.log("value: "+ value);
 
     if (button === "bigSkipBack") {
-      bigSkipBack.current = value ? value : bigSkipBack.current;
+      setBigSkipBack(value ? value : bigSkipBack);
     } else if (button === 'skipBack') {
-      skipBack.current = value ? value : skipBack.current;
+      setSkipBack(value ? value : skipBack);
     } else if (button === 'skipForward') {
-      skipForward.current = value ? value : skipForward.current;
+      setSkipForward(value ? value : skipForward);
     } else if (button === 'bigSkipForward') {
-      bigSkipForward.current = value ? value : bigSkipForward.current;
+      setBigSkipForward(value ? value : bigSkipForward);
     }
 
   }
 
   // provide either the value or the amt to increment by
   function incSpeed(value, inc) {
+    value = parseFloat(value);
+    inc = parseFloat(inc);
 
     if (value !== 0) {
 
       if (value > 2 || value < .05) return;
 
       vidRef.current.playbackRate = value;
-      setSpeedText(value + "x");
+      setSpeed(value);
 
     } else if (inc !== 0) {
 
@@ -157,18 +158,17 @@ function App() {
       if (newRate > 2 || newRate < .05) return;
       
       vidRef.current.playbackRate = newRate;
-      setSpeedText(newRate + "x");
+      setSpeed(newRate);
 
     }
 
   }
 
-  const speedInc = useRef(.05);
   function changeSpeedInc(e, isIncButton) {
-    const value = e.target.value;
+    const value = parseFloat(e.target.value);
 
     if (isIncButton) {
-      speedInc.current = value ? value : speedInc.current;
+      setSpeedInc(value ? value : speedInc);
     }
   }
 
@@ -224,29 +224,29 @@ function App() {
             </button>
             
             <div className="duration-container">
-              <button className="skip-button" onClick={() => skip(-bigSkipBack.current)}>{"<<"}</button>
-              <input className="skip-input" defaultValue={bigSkipBack.current} type="number" step="0.1" onChange={(e) => changeSkip(e, "bigSkipBack")}></input> 
+              <button className="skip-button" onClick={() => skip(-bigSkipBack)}>{"<<"}</button>
+              <input className="skip-input" defaultValue={bigSkipBack} type="number" step="0.1" onChange={(e) => changeSkip(e, "bigSkipBack")}></input> 
 
-              <button className="skip-button" onClick={() => skip(-skipBack.current)}> {"<"}  </button>
-              <input className="skip-input" defaultValue={skipBack.current} type="number" step="0.1" onChange={(e) => changeSkip(e, "skipBack")}></input>
+              <button className="skip-button" onClick={() => skip(-skipBack)}> {"<"}  </button>
+              <input className="skip-input" defaultValue={skipBack} type="number" step="0.1" onChange={(e) => changeSkip(e, "skipBack")}></input>
 
               <p>{`${formatTime(curTime)} / ${formatTime(vidDuration)}`}</p>
 
-              <input className="skip-input" defaultValue={skipForward.current} type="number" step="0.1" onChange={(e) => changeSkip(e, "skipForward")}></input>
-              <button className="skip-button" onClick={() => skip(skipForward.current)}> {">"} </button>
+              <input className="skip-input" defaultValue={skipForward} type="number" step="0.1" onChange={(e) => changeSkip(e, "skipForward")}></input>
+              <button className="skip-button" onClick={() => skip(skipForward)}> {">"} </button>
 
-              <input className="skip-input" defaultValue={bigSkipForward.current} type="number" step="0.1" onChange={(e) => changeSkip(e, "bigSkipForward")}></input>
-              <button className="skip-button" onClick={() => skip(bigSkipForward.current)}> {">>"} </button>
+              <input className="skip-input" defaultValue={bigSkipForward} type="number" step="0.1" onChange={(e) => changeSkip(e, "bigSkipForward")}></input>
+              <button className="skip-button" onClick={() => skip(bigSkipForward)}> {">>"} </button>
 
             </div> 
 
             <div className="speed-container">
 
-              <p className="speed-text">{speedText}</p>
+              <p className="speed-text">{speed}x</p>
               <input className="speed-slider" 
                 onChange={(e) => incSpeed(e.target.value, 0)} 
                 type="range" min=".1" max="2" step=".05" 
-                defaultValue="1" list="step-list">
+                value={speed} list="step-list">
               </input>
               <datalist id="step-list">
                   <option>.25</option>
@@ -258,8 +258,12 @@ function App() {
                   <option>1.75</option>
               </datalist>
 
-              <input className="speed-inc-input" defaultValue={speedInc.current} type="number" step="0.1" onChange={(e) => changeSpeedInc(e, true)}></input>
-              <button className="speed-inc-button" onClick={() => incSpeed(0, speedInc.current)}> {"+"} </button>
+              <input className="speed-inc-input" 
+                defaultValue={speedInc} type="number" 
+                step="0.05" min=".05" max="1"
+                onChange={(e) => changeSpeedInc(e, true)}>
+              </input>
+              <button className="speed-inc-button" onClick={() => incSpeed(0, speedInc)}> {"+"} </button>
               
             </div>
           
