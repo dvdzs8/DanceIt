@@ -140,16 +140,36 @@ function App() {
 
   }
 
-  function changeSpeed(e, button) {
+  // provide either the value or the amt to increment by
+  function incSpeed(value, inc) {
 
-    e.preventDefault();
+    if (value !== 0) {
 
+      if (value > 2 || value < .05) return;
+
+      vidRef.current.playbackRate = value;
+      setSpeedText(value + "x");
+
+    } else if (inc !== 0) {
+
+      let newRate = vidRef.current.playbackRate + inc;
+      newRate = Math.round(newRate*100)/100
+      if (newRate > 2 || newRate < .05) return;
+      
+      vidRef.current.playbackRate = newRate;
+      setSpeedText(newRate + "x");
+
+    }
+
+  }
+
+  const speedInc = useRef(.05);
+  function changeSpeedInc(e, isIncButton) {
     const value = e.target.value;
-    if (value > 2 || value < .05) return;
 
-    vidRef.current.playbackRate = value;
-    setSpeedText(value + "x");
-
+    if (isIncButton) {
+      speedInc.current = value ? value : speedInc.current;
+    }
   }
 
   //unfortunately... no idea what this is
@@ -222,12 +242,9 @@ function App() {
 
             <div className="speed-container">
 
-              {/* <button className="speed-inc-button" onClick={() => incSpeed(-speedDec.current)}> {"-"} </button>
-              <input className="speed-inc-input" defaultValue={speedDec.current} type="number" step="0.1" onChange={(e) => changeSpeedInc(e, "speedDec")}></input> */}
-
               <p className="speed-text">{speedText}</p>
               <input className="speed-slider" 
-                onChange={(e) => changeSpeed(e)} 
+                onChange={(e) => incSpeed(e.target.value, 0)} 
                 type="range" min=".1" max="2" step=".05" 
                 defaultValue="1" list="step-list">
               </input>
@@ -241,8 +258,9 @@ function App() {
                   <option>1.75</option>
               </datalist>
 
-
-
+              <input className="speed-inc-input" defaultValue={speedInc.current} type="number" step="0.1" onChange={(e) => changeSpeedInc(e, true)}></input>
+              <button className="speed-inc-button" onClick={() => incSpeed(0, speedInc.current)}> {"+"} </button>
+              
             </div>
           
           </div>
