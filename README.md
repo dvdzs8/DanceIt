@@ -2,9 +2,9 @@
 A website that you upload a video to which plays it back and provides special controls like:
 - [ ]  mirroring
 - [ ]  custom speed presets and increases
-- [ ]  custom skipping amounts (ie. forwards by 2.7 seconds)
+- [x]  custom skipping amounts (ie. forwards by 2.7 seconds)
 - [ ]  cookies to save setting presets, notes, and the uploaded video
-- [ ]  auto start (works for section or full video loops)
+- [ ]  auto video restarting (works for section or full video loops)
 - [ ]  countdowns
     - toggle to be: off, start beginning of video, start beginning of loop
 - [ ]  looping sections

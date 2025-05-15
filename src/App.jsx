@@ -1,11 +1,11 @@
 /**
  * 
  * CURRENT TASK:
- * skip buttons being editable for time
+ * 
  * 
  * ISSUES: 
  * how should i make it so when you change the skip to an invalid value,
- *  it goes back to what it was before?
+ *  it goes back to what it was before? not big issue though
  * 
  * i think i maybe want to make full screen only display the video
  * if there are no controls except pause in full screen is that fine?
@@ -17,7 +17,6 @@ import vid from './assets/vid.MOV';
 import './App.css';
 
 import { useState, useRef, useEffect } from 'react';
-// import { splitVendorChunkPlugin } from 'vite';
 
 function App() {
 
@@ -188,18 +187,23 @@ function App() {
             
             <div className="duration-container">
               <button className="skip-button" onClick={() => skip(-bigSkipBack.current)}>{"<<"}</button>
-              <button className="skip-button" onClick={() => skip(-skipBack.current)}>{"<"}</button>
+              <input className="skip-input" defaultValue={bigSkipBack.current} type="number" step="0.1" onChange={(e) => changeSkip(e, "bigSkipBack")}></input> 
+
+              <button className="skip-button" onClick={() => skip(-skipBack.current)}> {"<"}  </button>
+              <input className="skip-input" defaultValue={skipBack.current} type="number" step="0.1" onChange={(e) => changeSkip(e, "skipBack")}></input>
+
               <p>{`${formatTime(curTime)} / ${formatTime(vidDuration)}`}</p>
-              <button className="skip-button" onClick={() => skip(skipForward.current)}>{">"}</button>
-              <button className="skip-button" onClick={() => skip(bigSkipForward.current)}>{">>"}</button>
-                
-            </div>
 
-            <input className="skip-input" value={bigSkipBack.current} type="number" step="0.1" onChange={(e) => changeSkip(e, "bigSkipBack")}></input>  
-            <input className="skip-input" value={skipBack.current} type="number" step="0.1" onChange={(e) => changeSkip(e, "skipBack")}></input>  
-            <input className="skip-input" value={skipForward.current} type="number" step="0.1" onChange={(e) => changeSkip(e, "skipForward")}></input>  
-            <input className="skip-input" value={bigSkipForward.current} type="number" step="0.1" onChange={(e) => changeSkip(e, "bigSkipForward")}></input>
+              <input className="skip-input" defaultValue={skipForward.current} type="number" step="0.1" onChange={(e) => changeSkip(e, "skipForward")}></input>
+              <button className="skip-button" onClick={() => skip(skipForward.current)}> {">"} </button>
 
+              <input className="skip-input" defaultValue={bigSkipForward.current} type="number" step="0.1" onChange={(e) => changeSkip(e, "bigSkipForward")}></input>
+              <button className="skip-button" onClick={() => skip(bigSkipForward.current)}> {">>"} </button>
+
+            </div> 
+
+            <button className="speed-button"></button>
+          
           </div>
 
       </div>
