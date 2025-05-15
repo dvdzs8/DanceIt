@@ -1,6 +1,9 @@
 /**
  * 
  * CURRENT TASK:
+ * speed inc and dec buttons with their inputs
+ * speed presets
+ * mirror
  * 
  * 
  * ISSUES: 
@@ -10,6 +13,8 @@
  * i think i maybe want to make full screen only display the video
  * if there are no controls except pause in full screen is that fine?
  * maybe keep the forward and back arrows.
+ * 
+ * make it so clicking on div/text of a button also clicks that button
  * 
  */
 
@@ -27,6 +32,7 @@ function App() {
   const [fullScreen, setFullScreen] = useState(false);
   const [curTime, setCurTime] = useState(0); //in seconds
   const [vidDuration, setVidDuration] = useState(0); //is set to correct format
+  const [speedText, setSpeedText] = useState(1+"x");
 
   const bigSkipBack = useRef(10);
   const skipBack = useRef(1);
@@ -134,6 +140,18 @@ function App() {
 
   }
 
+  function changeSpeed(e, button) {
+
+    e.preventDefault();
+
+    const value = e.target.value;
+    if (value > 2 || value < .05) return;
+
+    vidRef.current.playbackRate = value;
+    setSpeedText(value + "x");
+
+  }
+
   //unfortunately... no idea what this is
   const leadingZeroFormatter = new Intl.NumberFormat(undefined, {minimumIntegerDigits: 2});
 
@@ -202,7 +220,30 @@ function App() {
 
             </div> 
 
-            <button className="speed-button"></button>
+            <div className="speed-container">
+
+              {/* <button className="speed-inc-button" onClick={() => incSpeed(-speedDec.current)}> {"-"} </button>
+              <input className="speed-inc-input" defaultValue={speedDec.current} type="number" step="0.1" onChange={(e) => changeSpeedInc(e, "speedDec")}></input> */}
+
+              <p className="speed-text">{speedText}</p>
+              <input className="speed-slider" 
+                onChange={(e) => changeSpeed(e)} 
+                type="range" min=".1" max="2" step=".05" 
+                defaultValue="1" list="step-list">
+              </input>
+              <datalist id="step-list">
+                  <option>.25</option>
+                  <option>.5</option>
+                  <option>.75</option>
+                  <option>1</option>
+                  <option>1.25</option>
+                  <option>1.5</option>
+                  <option>1.75</option>
+              </datalist>
+
+
+
+            </div>
           
           </div>
 
