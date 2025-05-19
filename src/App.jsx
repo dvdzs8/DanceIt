@@ -25,7 +25,7 @@ import './App.css';
 import VideoContainer from './components/VideoContainer';
 
 import { useState, useRef, useEffect } from 'react';
-import VideoControlsContainer from './components/VideoControlsContainer';
+import VideoControls from './components/VideoControls';
 
 function App() {
 
@@ -130,7 +130,7 @@ function App() {
         setVidDuration={setVidDuration}
       />
 
-      <VideoControlsContainer
+      <VideoControls
         vidRef={vidRef}
         clickPlay={clickPlay}
         playing={playing}

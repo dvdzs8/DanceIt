@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
-import SpeedControlsContainer from './SpeedControlsContainer';
+import SpeedControls from './SpeedControls';
+import AdditionalControls from './AdditionalControls';
 
 export default function VideoControlsContainer({ 
     vidRef, clickPlay, playing, clickFullScreen,
@@ -87,7 +88,11 @@ export default function VideoControlsContainer({
                 </div>
             </div>
 
-            <SpeedControlsContainer
+            <SpeedControls
+                vidRef={vidRef}
+            />
+
+            <AdditionalControls
                 vidRef={vidRef}
             />
             

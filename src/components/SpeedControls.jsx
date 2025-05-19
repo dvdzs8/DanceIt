@@ -1,6 +1,6 @@
 import {useState, useRef} from 'react';
 
-export default function SpeedControlsContainer ( { vidRef }) {
+export default function SpeedControls ( { vidRef }) {
 
     const [speed, setSpeed] = useState(1.0);
     const [speedInc, setSpeedInc] = useState(.05);
@@ -58,7 +58,15 @@ export default function SpeedControlsContainer ( { vidRef }) {
         const value = parseFloat(e.target.value);
 
         if (presetNum === 1) {
-        setSpeedPreset1(value);
+            setSpeedPreset1(value);
+        } else if (presetNum === 2) {
+            setSpeedPreset2(value);
+        } else if (presetNum === 3) {
+            setSpeedPreset3(value);
+        } else if (presetNum === 4) {
+            setSpeedPreset4(value);
+        } else if (presetNum === 5) {
+            setSpeedPreset5(value);
         }
     }
     return (
