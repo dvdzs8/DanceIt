@@ -60,7 +60,7 @@ export default function VideoControlsContainer({
                 <div className="first-line-controls">
 
                     <div className="volume-container">
-                        <button className="mute-button" onClick={clickMute}>Vol/Mute</button>
+                        <button className="mute-button" onClick={clickMute}>V</button>
                         <input className="volume-slider" onChange={(e) => changeVolume(e)} type="range" min="0" max="1" step="any" defaultValue="1"></input>
                     </div>
                     

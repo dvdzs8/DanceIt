@@ -1,7 +1,7 @@
 # Description
 A website that you upload a video to which plays it back and provides special controls like:
 - [ ]  mirroring
-- [ ]  custom speed presets and increases
+- [x]  custom speed presets and increases
 - [x]  custom skipping amounts (ie. forwards by 2.7 seconds)
 - [ ]  cookies to save setting presets, notes, and the uploaded video
 - [ ]  auto video restarting (works for section or full video loops)
@@ -35,6 +35,7 @@ Correction: Video player in top left corner, controls at small bar on bottom, no
     - [ ]  karina’s dance team
     - [ ]  pitt: fresa, dance clubs
     - [ ]  other dancer friends: patrick upton
+- sort the inputtable areas after entering?
 
 # Commands for Development
 to create a new project: 

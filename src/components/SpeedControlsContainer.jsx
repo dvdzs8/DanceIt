@@ -7,10 +7,10 @@ export default function SpeedControlsContainer ( { vidRef }) {
     const [speedDec, setSpeedDec] = useState(.05);
 
     const [speedPreset1, setSpeedPreset1] = useState(.25);
-    // const [speedPreset2, setSpeedPreset2] = useState(.5);
-    // const [speedPreset3, setSpeedPreset3] = useState(.75);
-    // const [speedPreset4, setSpeedPreset4] = useState(1);
-    // const [speedPreset5, setSpeedPreset5] = useState(1.25);
+    const [speedPreset2, setSpeedPreset2] = useState(.5);
+    const [speedPreset3, setSpeedPreset3] = useState(.75);
+    const [speedPreset4, setSpeedPreset4] = useState(1);
+    const [speedPreset5, setSpeedPreset5] = useState(1.25);
 
     // provide either the value or the amt to increment by
     function incSpeed(value, inc) {
@@ -42,7 +42,6 @@ export default function SpeedControlsContainer ( { vidRef }) {
     }
 
     function changeSpeedInc(e, isIncButton) {
-        console.print("test" + e.target.value);
         const value = parseFloat(e.target.value);
         if (!value) {
         return;
@@ -97,12 +96,47 @@ export default function SpeedControlsContainer ( { vidRef }) {
             <button className="speed-inc-button" onClick={() => incSpeed(0, speedInc)}> {"+"} </button>
 
             <div className="speed-presets">
-                <button className="speed-preset-button" onClick={() => incSpeed(speedPreset1, 0)}>A</button>
-                <input className="speed-preset-input" 
-                defaultValue={speedPreset1} type="number" 
-                step="0.05" min=".1" max="2"
-                onChange={(e) => changeSpeedPreset(e, 1)}>
-                </input>
+
+                <div className="speed-preset">
+                    <button className="speed-preset-button" onClick={() => incSpeed(speedPreset1, 0)}>A</button>
+                    <input className="speed-preset-input" 
+                    defaultValue={speedPreset1} type="number" 
+                    step="0.05" min=".1" max="2"
+                    onChange={(e) => changeSpeedPreset(e, 1)}>
+                    </input>
+                </div>
+                <div className="speed-preset">
+                    <button className="speed-preset-button" onClick={() => incSpeed(speedPreset2, 0)}>B</button>
+                    <input className="speed-preset-input" 
+                    defaultValue={speedPreset2} type="number" 
+                    step="0.05" min=".1" max="2"
+                    onChange={(e) => changeSpeedPreset(e, 2)}>
+                    </input>
+                </div>
+                <div className="speed-preset">
+                    <button className="speed-preset-button" onClick={() => incSpeed(speedPreset3, 0)}>C</button>
+                    <input className="speed-preset-input" 
+                    defaultValue={speedPreset3} type="number" 
+                    step="0.05" min=".1" max="2"
+                    onChange={(e) => changeSpeedPreset(e, 3)}>
+                    </input>
+                </div>
+                <div className="speed-preset">
+                    <button className="speed-preset-button" onClick={() => incSpeed(speedPreset4, 0)}>D</button>
+                    <input className="speed-preset-input" 
+                    defaultValue={speedPreset4} type="number" 
+                    step="0.05" min=".1" max="2"
+                    onChange={(e) => changeSpeedPreset(e, 4)}>
+                    </input>
+                </div>
+                <div className="speed-preset">
+                    <button className="speed-preset-button" onClick={() => incSpeed(speedPreset5, 0)}>E</button>
+                    <input className="speed-preset-input" 
+                    defaultValue={speedPreset5} type="number" 
+                    step="0.05" min=".1" max="2"
+                    onChange={(e) => changeSpeedPreset(e, 5)}>
+                    </input>
+                </div>
                 
             </div>
                     
