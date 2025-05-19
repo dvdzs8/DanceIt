@@ -1,7 +1,6 @@
 /**
  * 
  * CURRENT TASK:
- * speed inc and dec buttons with their inputs
  * speed presets
  * mirror
  * 
@@ -21,7 +20,10 @@
 import vid from './assets/vid.MOV';
 import './App.css';
 
+import VideoContainer from './components/VideoContainer';
+
 import { useState, useRef, useEffect } from 'react';
+import VideoControlsContainer from './components/VideoControlsContainer';
 
 function App() {
 
@@ -32,14 +34,6 @@ function App() {
   const [fullScreen, setFullScreen] = useState(false);
   const [curTime, setCurTime] = useState(0.0); //in seconds
   const [vidDuration, setVidDuration] = useState(0.0); //is set to correct format
-  const [speed, setSpeed] = useState(1.0);
-
-  const [bigSkipBack, setBigSkipBack] = useState(10.0);
-  const [skipBack, setSkipBack] = useState(1.0);
-  const [skipForward, setSkipForward] = useState(1.0);
-  const [bigSkipForward, setBigSkipForward] = useState(10.0);
-
-  const [speedInc, setSpeedInc] = useState(.05);
 
   //get DOM references (js usable vars drawn from the HTML)
   const vidContainerRef = useRef(null);
@@ -80,34 +74,12 @@ function App() {
 
   }, []);
 
-  function skip(t) {
-    if (isNaN(t)) {
-      return;
-    }
-
-    //check if end of video
-    const calcTime = vidRef.current.currentTime + parseFloat(t);
-    if (calcTime >= vidDuration) {
-      vidRef.current.dispatchEvent(new Event("ended"));
-    }
-    vidRef.current.currentTime = calcTime;
-  }
-
   function clickPlay() {
     //actually pause/unpause the video
     playing ? vidRef.current.pause() : vidRef.current.play();
 
     //change the state to rerender button
     setPlaying(!playing);
-  }
-
-  function clickMute() {
-    vidRef.current.muted = !vidRef.current.muted;
-  }
-
-  function changeVolume(e) {
-    vidRef.current.volume = e.target.value;
-    vidRef.current.muted = e.target.value === 0;
   }
 
   function clickFullScreen() {
@@ -120,56 +92,6 @@ function App() {
 
     //remember i still need state changes to trigger icon rerenders
     setFullScreen(!fullScreen);
-  }
-
-  function changeSkip(e, button) {
-    
-    const value = e.target.value;
-    console.log("value: "+ value);
-
-    if (button === "bigSkipBack") {
-      setBigSkipBack(value ? value : bigSkipBack);
-    } else if (button === 'skipBack') {
-      setSkipBack(value ? value : skipBack);
-    } else if (button === 'skipForward') {
-      setSkipForward(value ? value : skipForward);
-    } else if (button === 'bigSkipForward') {
-      setBigSkipForward(value ? value : bigSkipForward);
-    }
-
-  }
-
-  // provide either the value or the amt to increment by
-  function incSpeed(value, inc) {
-    value = parseFloat(value);
-    inc = parseFloat(inc);
-
-    if (value !== 0) {
-
-      if (value > 2 || value < .05) return;
-
-      vidRef.current.playbackRate = value;
-      setSpeed(value);
-
-    } else if (inc !== 0) {
-
-      let newRate = vidRef.current.playbackRate + inc;
-      newRate = Math.round(newRate*100)/100
-      if (newRate > 2 || newRate < .05) return;
-      
-      vidRef.current.playbackRate = newRate;
-      setSpeed(newRate);
-
-    }
-
-  }
-
-  function changeSpeedInc(e, isIncButton) {
-    const value = parseFloat(e.target.value);
-
-    if (isIncButton) {
-      setSpeedInc(value ? value : speedInc);
-    }
   }
 
   //unfortunately... no idea what this is
@@ -193,85 +115,27 @@ function App() {
 
   return (
     <>
-      <div className="video-container" ref={vidContainerRef}>
+      <VideoContainer 
+        vidContainerRef={vidContainerRef}
+        vid={vid}
+        vidRef={vidRef}
+        clickPlay={clickPlay}
+        setCurTime={setCurTime}
+        setVidDuration={setVidDuration}
+      />
 
-        <video 
-          src={vid} 
-          ref={vidRef} 
-          onClick={clickPlay} 
-          onEnded={clickPlay}
-          onTimeUpdate={(e) => setCurTime(e.target.currentTime)}
-          onLoadedMetadata={(e) => setVidDuration(e.target.duration)}
-        />
-
-      </div>
-      <div className="video-controls-container">
-
-          <div className="timeline-container"> </div>
-
-          <div className="controls">
-
-            <button className="play-button" onClick={clickPlay}>
-              { playing ? "Pause" : "Play" }
-            </button>
-
-            <div className="volume-container">
-              <button className="mute-button" onClick={clickMute}>Vol/Mute</button>
-              <input className="volume-slider" onChange={(e) => changeVolume(e)} type="range" min="0" max="1" step="any" defaultValue="1"></input>
-            </div>
-
-            <button className="full-screen-button" onClick={clickFullScreen}>{fullScreen ? "Exit" : "Full Screen"}  
-            </button>
-            
-            <div className="duration-container">
-              <button className="skip-button" onClick={() => skip(-bigSkipBack)}>{"<<"}</button>
-              <input className="skip-input" defaultValue={bigSkipBack} type="number" step="0.1" onChange={(e) => changeSkip(e, "bigSkipBack")}></input> 
-
-              <button className="skip-button" onClick={() => skip(-skipBack)}> {"<"}  </button>
-              <input className="skip-input" defaultValue={skipBack} type="number" step="0.1" onChange={(e) => changeSkip(e, "skipBack")}></input>
-
-              <p>{`${formatTime(curTime)} / ${formatTime(vidDuration)}`}</p>
-
-              <input className="skip-input" defaultValue={skipForward} type="number" step="0.1" onChange={(e) => changeSkip(e, "skipForward")}></input>
-              <button className="skip-button" onClick={() => skip(skipForward)}> {">"} </button>
-
-              <input className="skip-input" defaultValue={bigSkipForward} type="number" step="0.1" onChange={(e) => changeSkip(e, "bigSkipForward")}></input>
-              <button className="skip-button" onClick={() => skip(bigSkipForward)}> {">>"} </button>
-
-            </div> 
-
-            <div className="speed-container">
-
-              <p className="speed-text">{speed}x</p>
-              <input className="speed-slider" 
-                onChange={(e) => incSpeed(e.target.value, 0)} 
-                type="range" min=".1" max="2" step=".05" 
-                value={speed} list="step-list">
-              </input>
-              <datalist id="step-list">
-                  <option>.25</option>
-                  <option>.5</option>
-                  <option>.75</option>
-                  <option>1</option>
-                  <option>1.25</option>
-                  <option>1.5</option>
-                  <option>1.75</option>
-              </datalist>
-
-              <input className="speed-inc-input" 
-                defaultValue={speedInc} type="number" 
-                step="0.05" min=".05" max="1"
-                onChange={(e) => changeSpeedInc(e, true)}>
-              </input>
-              <button className="speed-inc-button" onClick={() => incSpeed(0, speedInc)}> {"+"} </button>
-              
-            </div>
-          
-          </div>
-
-      </div>
+      <VideoControlsContainer
+        clickPlay={clickPlay}
+        playing={playing}
+        clickFullScreen={clickFullScreen}
+        fullScreen={fullScreen}
+        formatTime={formatTime}
+        curTime={curTime}
+        vidDuration={vidDuration}
+      />
+      
       <div className="footer">
-        <p>DanceIt!</p>
+        <span>DanceIt!</span>
       </div>
     </>
   );
