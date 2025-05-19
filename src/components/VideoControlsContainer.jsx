@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useRef } from 'react';
 
 export default function VideoControlsContainer({ 
-    clickPlay, playing, clickFullScreen,
+    vidRef, clickPlay, playing, clickFullScreen,
     fullScreen, formatTime, curTime, vidDuration,
 }) {
 
@@ -113,39 +113,40 @@ export default function VideoControlsContainer({
 
     return (
         <div className="video-controls-container">
-
-            <div className="timeline-container"> </div>
-
-            <div className="controls">
-
-                <button className="play-button" onClick={clickPlay}>
-                { playing ? "Pause" : "Play" }
-                </button>
-
-                <div className="volume-container">
-                <button className="mute-button" onClick={clickMute}>Vol/Mute</button>
-                <input className="volume-slider" onChange={(e) => changeVolume(e)} type="range" min="0" max="1" step="any" defaultValue="1"></input>
+            
+            <div className="primary-controls">
+                <div className="timeline-container">
+                    <span>{`${formatTime(curTime)} / ${formatTime(vidDuration)}`}</span>
                 </div>
 
-                <button className="full-screen-button" onClick={clickFullScreen}>{fullScreen ? "Exit" : "Full Screen"}  
-                </button>
-                
-                <div className="duration-container">
-                <button className="skip-button" onClick={() => skip(-bigSkipBack)}>{"<<"}</button>
-                <input className="skip-input" defaultValue={bigSkipBack} type="number" step="0.1" onChange={(e) => changeSkip(e, "bigSkipBack")}></input> 
+                <div className="first-line-controls">
 
-                <button className="skip-button" onClick={() => skip(-skipBack)}> {"<"}  </button>
-                <input className="skip-input" defaultValue={skipBack} type="number" step="0.1" onChange={(e) => changeSkip(e, "skipBack")}></input>
+                    <div className="volume-container">
+                        <button className="mute-button" onClick={clickMute}>Vol/Mute</button>
+                        <input className="volume-slider" onChange={(e) => changeVolume(e)} type="range" min="0" max="1" step="any" defaultValue="1"></input>
+                    </div>
+                    
+                    <button className="skip-button" onClick={() => skip(-bigSkipBack)}>{"<<"}</button>
+                    <input className="skip-input" defaultValue={bigSkipBack} type="number" step="0.1" onChange={(e) => changeSkip(e, "bigSkipBack")}></input> 
 
-                <span>{`${formatTime(curTime)} / ${formatTime(vidDuration)}`}</span>
+                    <button className="skip-button" onClick={() => skip(-skipBack)}> {"<"}  </button>
+                    <input className="skip-input" defaultValue={skipBack} type="number" step="0.1" onChange={(e) => changeSkip(e, "skipBack")}></input>
 
-                <input className="skip-input" defaultValue={skipForward} type="number" step="0.1" onChange={(e) => changeSkip(e, "skipForward")}></input>
-                <button className="skip-button" onClick={() => skip(skipForward)}> {">"} </button>
+                    <button className="play-button" onClick={clickPlay}>
+                        { playing ? "Pause" : "Play" }
+                    </button>
 
-                <input className="skip-input" defaultValue={bigSkipForward} type="number" step="0.1" onChange={(e) => changeSkip(e, "bigSkipForward")}></input>
-                <button className="skip-button" onClick={() => skip(bigSkipForward)}> {">>"} </button>
+                    <input className="skip-input" defaultValue={skipForward} type="number" step="0.1" onChange={(e) => changeSkip(e, "skipForward")}></input>
+                    <button className="skip-button" onClick={() => skip(skipForward)}> {">"} </button>
 
-                </div> 
+                    <input className="skip-input" defaultValue={bigSkipForward} type="number" step="0.1" onChange={(e) => changeSkip(e, "bigSkipForward")}></input>
+                    <button className="skip-button" onClick={() => skip(bigSkipForward)}> {">>"} </button>
+                    
+                    <button className="full-screen-button" onClick={clickFullScreen}>
+                        {fullScreen ? "Exit" : "Full Screen"}  
+                    </button>
+               
+                </div>
 
                 <div className="speed-container">
 

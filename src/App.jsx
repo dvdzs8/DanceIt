@@ -15,6 +15,8 @@
  * 
  * make it so clicking on div/text of a button also clicks that button
  * 
+ * warnings: 'content-type' header charset should be utf-8? media type should be
+ * text/jsx not text/javascript ? form field should have id or name attribute
  */
 
 import vid from './assets/vid.MOV';
@@ -62,8 +64,12 @@ function App() {
 
     document.addEventListener('fullscreenchange', () => {
       setFullScreen(document.fullscreenElement != null);
+      return true;
     })
-    window.addEventListener('keydown', (e) => handleKeyDown(e));
+    window.addEventListener('keydown', (e) => {
+      handleKeyDown(e)
+      return true;
+    });
 
     return () => {
       window.removeEventListener('keydown', (e) => handleKeyDown(e));
@@ -125,6 +131,7 @@ function App() {
       />
 
       <VideoControlsContainer
+        vidRef={vidRef}
         clickPlay={clickPlay}
         playing={playing}
         clickFullScreen={clickFullScreen}
