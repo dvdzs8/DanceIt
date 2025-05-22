@@ -1,7 +1,9 @@
 /**
  * 
  * CURRENT TASK:
- * loop (for subsections)
+ * loop: Logic mostly working, however needs some major quality of life changes.
+ *    only loop when the video is playing normally? what about when people seek out of the loop range?
+ *    editable loop by text?
  * mirror
  * 
  * 

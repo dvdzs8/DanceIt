@@ -19,13 +19,13 @@ export default function VideoControlsContainer({
     useEffect( () => {
 
         const vid = vidRef.current;
-        setEndTime(vidRef.current.duration);
 
         function handleTimeUpdate() {
             if (looping && vid.currentTime >= endTime) {
                 vid.currentTime = startTime;
                 vid.play();
             } 
+            console.log("endtime" + endTime);
         }
 
         vid.addEventListener('timeupdate', handleTimeUpdate);
@@ -120,12 +120,12 @@ export default function VideoControlsContainer({
                 
                 <div className="loop-container">
                     <label htmlFor="looping">Loop: </label>
-                    <input type="checkbox" id="looping" name="looping" onClick={(e) => {
+                    <input type="checkbox" id="looping" name="looping" onChange={(e) => {
                         setLooping(!looping);
                     }}/>
-                    <button className="loop-button">In</button>
-                    <span className="loop-text">{`XX:XX - XX:XX`}</span>
-                    <button className="loop-button">Out</button>
+                    <button className="loop-button" onClick={() => setStartTime(vidRef.current.currentTime)}>In</button>
+                    <span className="loop-text">{`${formatTime(startTime)} - ${formatTime(endTime)}`}</span>
+                    <button className="loop-button" onLoad={() => setEndTime(vidDuration)} onClick={() => setEndTime(vidRef.current.currentTime)}>Out</button>
                 </div>
 
                 <fieldset className="countdown-container">
