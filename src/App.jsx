@@ -1,7 +1,7 @@
 /**
  * 
  * CURRENT TASK:
- * speed presets
+ * loop (for subsections)
  * mirror
  * 
  * 
@@ -35,7 +35,8 @@ function App() {
   const [playing, setPlaying] = useState(false);
   const [fullScreen, setFullScreen] = useState(false);
   const [curTime, setCurTime] = useState(0.0); //in seconds
-  const [vidDuration, setVidDuration] = useState(0.0); //is set to correct format
+  const [vidDuration, setVidDuration] = useState(0.0);
+  const [looping, setLooping] = useState(false);
 
   //get DOM references (js usable vars drawn from the HTML)
   const vidContainerRef = useRef(null);
@@ -53,7 +54,7 @@ function App() {
           myE.preventDefault();
           clickPlay();
           break;
-        case "arrowleft":
+        case "arrowleft": 
           skip(-1);
           break;
         case "arrowright":
@@ -62,21 +63,17 @@ function App() {
       }
     }
 
-    document.addEventListener('fullscreenchange', () => {
+    function handleFullScreen() {
       setFullScreen(document.fullscreenElement != null);
-      return true;
-    })
-    window.addEventListener('keydown', (e) => {
-      handleKeyDown(e)
-      return true;
-    });
+    }
+
+    document.addEventListener('fullscreenchange', handleFullScreen); 
+    window.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      window.removeEventListener('keydown', (e) => handleKeyDown(e));
-      document.removeEventListener('fullscreenchange', () => {
-        setFullScreen(document.fullscreenElement != null);
-      });
-    }
+      document.removeEventListener('fullscreenchange', handleFullScreen);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
 
   }, []);
 
@@ -86,6 +83,7 @@ function App() {
 
     //change the state to rerender button
     setPlaying(!playing);
+    return "haha";
   }
 
   function clickFullScreen() {
@@ -121,6 +119,7 @@ function App() {
 
   return (
     <>
+      
       <VideoContainer 
         vidContainerRef={vidContainerRef}
         vid={vid}
@@ -128,6 +127,7 @@ function App() {
         clickPlay={clickPlay}
         setCurTime={setCurTime}
         setVidDuration={setVidDuration}
+        looping={looping}
       />
 
       <VideoControls
@@ -139,6 +139,8 @@ function App() {
         formatTime={formatTime}
         curTime={curTime}
         vidDuration={vidDuration}
+        looping={looping}
+        setLooping={setLooping}
       />
       
       <div className="footer">

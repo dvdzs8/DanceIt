@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function VideoContainer({ 
     vidContainerRef, vid, vidRef, clickPlay,
-    setCurTime, setVidDuration
+    setCurTime, setVidDuration, looping
 }) {
 
         return (
@@ -12,7 +12,7 @@ export default function VideoContainer({
                 src={vid} 
                 ref={vidRef} 
                 onClick={clickPlay} 
-                onEnded={clickPlay}
+                onEnded={looping ? null : clickPlay}
                 onTimeUpdate={(e) => setCurTime(e.target.currentTime)}
                 onLoadedMetadata={(e) => setVidDuration(e.target.duration)}
                 />

@@ -1,16 +1,40 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect} from 'react';
 import SpeedControls from './SpeedControls';
-import AdditionalControls from './AdditionalControls';
 
 export default function VideoControlsContainer({ 
     vidRef, clickPlay, playing, clickFullScreen,
-    fullScreen, formatTime, curTime, vidDuration,
+    fullScreen, formatTime, curTime, vidDuration, looping,
+    setLooping
 }) {
 
     const [bigSkipBack, setBigSkipBack] = useState(10.0);
     const [skipBack, setSkipBack] = useState(1.0);
     const [skipForward, setSkipForward] = useState(1.0);
     const [bigSkipForward, setBigSkipForward] = useState(10.0);
+
+    const [startTime, setStartTime] = useState(0.0);
+    const [endTime, setEndTime] = useState(0.0);
+
+
+    useEffect( () => {
+
+        const vid = vidRef.current;
+        setEndTime(vidRef.current.duration);
+
+        function handleTimeUpdate() {
+            if (looping && vid.currentTime >= endTime) {
+                vid.currentTime = startTime;
+                vid.play();
+            } 
+        }
+
+        vid.addEventListener('timeupdate', handleTimeUpdate);
+
+        return () => {
+            vid.removeEventListener('timeupdate', handleTimeUpdate);
+        }
+
+    }, [looping, startTime, endTime]);
 
     function skip(t) {
         if (isNaN(t)) {
@@ -19,9 +43,9 @@ export default function VideoControlsContainer({
 
         //check if end of video
         const calcTime = vidRef.current.currentTime + parseFloat(t);
-        if (calcTime >= vidDuration) {
-        vidRef.current.dispatchEvent(new Event("ended"));
-        }
+        // if (calcTime >= endTime) {
+        //     vidRef.current.dispatchEvent(new Event("ended"));
+        // }
         vidRef.current.currentTime = calcTime;
     }
 
@@ -86,15 +110,39 @@ export default function VideoControlsContainer({
                     </button>
                
                 </div>
+                
+                <SpeedControls
+                    vidRef={vidRef}
+                />
             </div>
 
-            <SpeedControls
-                vidRef={vidRef}
-            />
+            <div className="additional-controls-container">
+                
+                <div className="loop-container">
+                    <label htmlFor="looping">Loop: </label>
+                    <input type="checkbox" id="looping" name="looping" onClick={(e) => {
+                        setLooping(!looping);
+                    }}/>
+                    <button className="loop-button">In</button>
+                    <span className="loop-text">{`XX:XX - XX:XX`}</span>
+                    <button className="loop-button">Out</button>
+                </div>
 
-            <AdditionalControls
-                vidRef={vidRef}
-            />
+                <fieldset className="countdown-container">
+
+                    <legend>Countdown: </legend>
+
+                    <input type="radio" id="countdown1" name="countdown" value="videoStart" />
+                    <label htmlFor="countdown1">Video Start</label>
+                    
+                    <input type="radio" id="countdown2" name="countdown" value="loopStart" />
+                    <label htmlFor="countdown1">Loop Start</label>
+
+                    <input type="radio" id="countdown3" name="countdown" value="off" />
+                    <label htmlFor="countdown1">Off</label>
+
+                </fieldset>
+            </div>
             
         </div>
     );
