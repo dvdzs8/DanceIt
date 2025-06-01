@@ -1,5 +1,5 @@
 # Description
-A website that you upload a video to which plays it back and provides special controls like:
+A fun project idea I had. Massively a WIP. A website that you upload a video to which plays it back and provides special controls like:
 - [ ]  mirroring
 - [x]  custom speed presets and increases
 - [x]  custom skipping amounts (ie. forwards by 2.7 seconds)
