@@ -4,9 +4,9 @@ A fun project idea I had. Massively a WIP. A website that you upload a video to 
 - [x]  custom speed presets and increases
 - [x]  custom skipping amounts (ie. forwards by 2.7 seconds)
 - [ ]  cookies to save setting presets, notes, and the uploaded video
-- [ ]  auto video restarting (works for section or full video loops)
+- [ ]  auto video restarting that works for section and full video loops
 - [ ]  countdowns
-    - toggle to be: off, start beginning of video, start beginning of loop
+    - pptions: off, start beginning of video, start beginning of loop
 - [ ]  looping sections
     - click start loop or end loop while paused at that time. playbar is marked/colored
     - if end is before start, make the video loop
