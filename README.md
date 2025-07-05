@@ -44,4 +44,5 @@ Correction: Video player in top left corner, controls at small bar on bottom, no
 
 # How to Run
 Run with: npm run dev
+
 Open your web browser and go to URL: localhost:5173 
