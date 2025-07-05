@@ -12,7 +12,7 @@ A fun project idea I had. Massively a WIP. A website that you upload a video to 
 - [ ]  auto video restarting that works for section and full video loops
 - [ ]  countdowns
     - pptions: off, start beginning of video, start beginning of loop
-- [ ]  looping sections
+- [x]  looping sections
     - click start loop or end loop while paused at that time. playbar is marked/colored
     - if end is before start, make the video loop
 - [ ]  timestamped notes that play in big font while you dance able to be edited and deleted
@@ -31,7 +31,7 @@ Correction: Video player in top left corner, controls at small bar on bottom, no
 - [ ]  video zoom in or crop
 - [ ]  export button get a video with the note pop ups included
 - [ ]  accepts youtube URLs without playing ads every time a setting is changed…
-- [ ]  multiple video projects open at once
+- [ ]  multiple video projects open at once like a save slot screen
 - [ ]  toggle webcam display to act like an actual mirror
 - [ ]  youtube extension version in the future?
     - [ ]  all features included with the notes as well
@@ -39,31 +39,9 @@ Correction: Video player in top left corner, controls at small bar on bottom, no
 - [ ]  promote danceit
     - [ ]  karina’s dance team
     - [ ]  pitt: fresa, dance clubs
-    - [ ]  other dancer friends: patrick upton
-- sort the inputtable areas after entering?
+    - [ ]  other dancer friends: patrick
+- [ ] sort the inputtable areas after entering?
 
-# Commands for Development
-to create a new project: 
-$ npm create vite@latest nameOfProject
-$ cd nameOfProject
-$ npm install
-
-to run:
-$ npm run dev
-
-to build for production:
-$ npm build
-or something like that
-
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# How to Run
+Run with: npm run dev
+Open your web browser and go to URL: localhost:5173 
